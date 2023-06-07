@@ -3,12 +3,114 @@
     <head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta charset="UTF-8">
-        <title>My movie App</title>
+        <title>My movie App Documentaion</title>
     </head>
     <body>
         <p>
             This movie API will provide users with acess to imformation about various directors, movies and genres. 
             Users will also be able to sign up , update personal information , and create a list of favorite movies.
         </p>
+
+
+        <table>
+            <thead>
+                <tr>
+                    <th> Data Return </th>
+                    <th> URL </th>
+                    <th> HTTP Method </th>
+                    <th> Paramaters </th>
+                    <th> Response </th>                
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td> Returns a list of all movies </td>
+                    <td> /movies </td>
+                    <td> GET </td>
+                    <td> None </td>
+                    <td> A JSON object of all the movies as an array </td>                                   
+                </tr>
+
+                <tr> 
+                    <td> Returns the data of a single movie by title </td>
+                    <td> /movies/:title </td>
+                    <td> GET </td>
+                    <td> :title </td>
+                    <td> A JSON object showing data on a single movie </td>
+                </tr>
+
+                <tr> 
+                   <td> Returns data about a genre by name </td>
+                   <td> movies/genre/:genreName </td> 
+                   <td> GET </td>
+                   <td> :genreName </td>   
+                   <td> A JSON object of a genre </td>
+                </tr>
+
+                <tr>
+                    <td> Returns data about a director by name </td>
+                    <td> movies/directors/:directorName </td>
+                    <td> GET </td>
+                    <td> :directorName </td>
+                    <td> A JSON object of a director </td>
+                </tr>
+
+                <tr>
+                    <td> Returns a list of all users </td>
+                    <td> /users </td>
+                    <td> GET </td>
+                    <td> none </td>
+                    <td> A JSON object of all users as an array </td>
+                </tr>
+
+                <tr> 
+                    <td> Returns data about a specific user by name </td>
+                    <td> /users/:userName </td>
+                    <td> GET </td>
+                    <td> :userName </td>
+                    <td> A JSON object of data on a single user by name </td>
+                </tr>
+
+                <tr>
+                    <td> Allows new users to register </td>
+                    <td> /users </td>
+                    <td> POST </td>
+                    <td> none </td>
+                    <td> A JSON of the new user and their details </td>
+                </tr>
+
+                <tr>
+                    <td> Allows users to update their info </td>
+                    <td> /users/:id </td>
+                    <td> PUT </td>
+                    <td> :id </td>
+                    <td> A JSON of the users updated info </td>
+                </tr>
+
+                <tr>
+                    <td> Allows users to add a movie to their favourites </td>
+                    <td> /users/:id/:movieTitle </td>
+                    <td> POST </td>
+                    <td> :id, :movieTitle </td>
+                    <td> Text confirming a movie had been added to their favourites </td>
+                </tr>
+
+                <tr>
+                    <td> Allows users to remove a movie to their favourites </td>
+                    <td> /users/:id/movieTitle </td>
+                    <td> DELETE </td>
+                    <td> :id, :movieTitle </td>
+                    <td> Text confirming a movie had been removed from their favourites </td>
+                </tr>
+
+                <tr>
+                    <td> Allows users to deregister </td>
+                    <td> /users/:id </td>
+                    <td> DELETE </td>
+                    <td> :id </td>
+                    <td> Text confirming a user has been removed </td>
+                </tr>
+            </tbody>
+        </table>
     </body>
 </html>
