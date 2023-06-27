@@ -41,7 +41,7 @@
 
                 <tr> 
                    <td> Returns data about a genre by name </td>
-                   <td> movies/genre/:genreName </td> 
+                   <td> /movies/genre/:genreName </td> 
                    <td> GET </td>
                    <td> :genreName </td>   
                    <td> A JSON object of a genre </td>
@@ -49,7 +49,7 @@
 
                 <tr>
                     <td> Returns data about a director by name </td>
-                    <td> movies/directors/:directorName </td>
+                    <td> /movies/directors/:directorName </td>
                     <td> GET </td>
                     <td> :directorName </td>
                     <td> A JSON object of a director </td>
@@ -81,33 +81,33 @@
 
                 <tr>
                     <td> Allows users to update their info </td>
-                    <td> /users/:id </td>
+                    <td> /users/:Username </td>
                     <td> PUT </td>
-                    <td> :id </td>
+                    <td> :Username </td>
                     <td> A JSON of the users updated info </td>
                 </tr>
 
                 <tr>
                     <td> Allows users to add a movie to their favourites </td>
-                    <td> /users/:id/:movieTitle </td>
+                    <td> /users/:Username/movies/:MovieID </td>
                     <td> POST </td>
-                    <td> :id, :movieTitle </td>
+                    <td> :Username, :movieID </td>
                     <td> Text confirming a movie had been added to their favourites </td>
                 </tr>
 
                 <tr>
                     <td> Allows users to remove a movie to their favourites </td>
-                    <td> /users/:id/movieTitle </td>
+                    <td> /users/:Username/movies/:MovieID </td>
                     <td> DELETE </td>
-                    <td> :id, :movieTitle </td>
+                    <td> :id, :MovieID </td>
                     <td> Text confirming a movie had been removed from their favourites </td>
                 </tr>
 
                 <tr>
                     <td> Allows users to deregister </td>
-                    <td> /users/:id </td>
+                    <td> /users/:Username </td>
                     <td> DELETE </td>
-                    <td> :id </td>
+                    <td> :Username </td>
                     <td> Text confirming a user has been removed </td>
                 </tr>
             </tbody>
