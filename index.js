@@ -11,6 +11,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
     // create a write stream (in append mode)
     // a 'log.txt' file is created in root directory
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'});
+let auth = require('./auth')(app);
+const passport = require('passport');
+require('./passport');
 
 const mongoose = require('mongoose');
 const Models = require('./models.js');
@@ -38,7 +41,7 @@ app.use(morgan('combined', {stream: accessLogStream}));
 
     // Movie GET requests
   
-    app.get('/movies', (req, res) => {
+    app.get('/movies', passport.authenticate('jwt', { session: false}), (req, res) => {
         Movies.find()
         .then((movies) => {
             res.status(201).json(movies);
@@ -49,7 +52,7 @@ app.use(morgan('combined', {stream: accessLogStream}));
         });
     });
 
-    app.get('/movies/:title', (req, res) => {
+    app.get('/movies/:title', passport.authenticate('jwt', { session: false}), (req, res) => {
         Movies.findOne({ Title: req.params.title })
         .then((movies) => {
             res.status(201).json(movies);
@@ -60,7 +63,7 @@ app.use(morgan('combined', {stream: accessLogStream}));
         });
     });
 
-    app.get('/movies/genres/:genreName', (req, res) => {
+    app.get('/movies/genres/:genreName', passport.authenticate('jwt', { session: false}), (req, res) => {
         Movies.findOne({ 'Genre.Name': req.params.genreName })
         .then((movie) => {
             res.status(201).json(movie.Genre);
@@ -70,7 +73,7 @@ app.use(morgan('combined', {stream: accessLogStream}));
         });
     });
 
-    app.get('/movies/directors/:directorName', (req, res) => {
+    app.get('/movies/directors/:directorName', passport.authenticate('jwt', { session: false}), (req, res) => {
         Movies.findOne({ 'Director.Name': req.params.directorName })
         .then((movie) => {
             res.status(201).json(movie.Director);
@@ -81,7 +84,7 @@ app.use(morgan('combined', {stream: accessLogStream}));
     });
 
     //GET all users
-    app.get('/users', (req, res) => {
+    app.get('/users', passport.authenticate('jwt', { session: false}), (req, res) => {
         Users.find()
         .then((users) => {
             res.status(201).json(users);
@@ -93,7 +96,7 @@ app.use(morgan('combined', {stream: accessLogStream}));
     });
 
     //GET a user by username
-    app.get('/users/:Username', (req, res) => {
+    app.get('/users/:Username', passport.authenticate('jwt', { session: false}), (req, res) => {
         Users.findOne({ Username: req.params.Username })
         .then((user) => {
             res.json(user);
@@ -141,7 +144,7 @@ app.use(morgan('combined', {stream: accessLogStream}));
     });
 
         // Add a movie to a user's list of favourites
-        app.post('/users/:Username/movies/:MovieID', (req, res) => {
+        app.post('/users/:Username/movies/:MovieID', passport.authenticate('jwt', {session: false}), (req, res) => {
             Users.findOneAndUpdate({ Username: req.params.Username }, {
                 $push: { FavouriteMovies: req.params.MovieID },
             },
@@ -172,7 +175,7 @@ app.use(morgan('combined', {stream: accessLogStream}));
         (required)
         Birthday: Date
     }*/
-    app.put('/users/:Username', (req, res) => {
+    app.put('/users/:Username', passport.authenticate('jwt', { session: false }), (req, res) => {
         Users.findOneAndUpdate(
             { Username: req.params.Username }, 
             { $set: {
@@ -201,7 +204,7 @@ app.use(morgan('combined', {stream: accessLogStream}));
     //DELETE requests
 
     //Delete a movie from a users favourite movies list
-    app.delete('/users/:Username/movies/:MovieID', (req, res) => {
+    app.delete('/users/:Username/movies/:MovieID', passport.authenticate('jwt', {session: false}), (req, res) => {
         Users.findOneAndUpdate(
             { Username: req.params.Username },
             {
