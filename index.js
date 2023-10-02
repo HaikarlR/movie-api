@@ -3,26 +3,32 @@ const express = require('express'),
     fs = require('fs'), // import built in node modules fs and path
     path = require('path'),
     bodyParser = require('body-parser'),
-    uuid = require('uuid');
+    uuid = require('uuid'),
+    mongoose = require('mongoose');
 
-const app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-    // create a write stream (in append mode)
-    // a 'log.txt' file is created in root directory
-const accessLogStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), {flags: 'a'});
-let auth = require('./auth')(app);
-const passport = require('passport');
-require('./passport');
-
-const mongoose = require('mongoose');
 const Models = require('./models.js');
 
 const Movies = Models.Movie;
 const Users = Models.User;
 
-mongoose.connect('mongodb://localhost:27017/cfDB', { useNewUrlParser: true, useUnifiedTopology: true });
+const app = express();
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+    // create a write stream (in append mode)
+    // a 'log.txt' file is created in root directory
+const accessLogStream = fs.createWriteStream(
+    path.join(__dirname, 'log.txt'), {flags: 'a'});
+
+
+mongoose.connect('mongodb://localhost:27017/cfDB', { 
+    useNewUrlParser: true, 
+    useUnifiedTopology: true 
+});
+
+let auth = require('./auth')(app);
+const passport = require('passport');
+require('./passport');
 
 // setup the logger
 app.use(morgan('combined', {stream: accessLogStream}));
@@ -84,7 +90,9 @@ app.use(morgan('combined', {stream: accessLogStream}));
     });
 
     //GET all users
-    app.get('/users', passport.authenticate('jwt', { session: false}), (req, res) => {
+    app.get('/users', 
+    passport.authenticate('jwt', { session: false}),
+     (req, res) => {
         Users.find()
         .then((users) => {
             res.status(201).json(users);
@@ -183,22 +191,28 @@ app.use(morgan('combined', {stream: accessLogStream}));
             Password: req.body.Password,
             Email: req.body.Email,
             Birthday: req.body.Birthday
-        }
+        },
       },
       { new: true }, // This line makes sure that the updated document is returned
         )
-        .then((user) => {
-            if(!user) {
-                return res.status(400).send('Error: No user was found');
-            } else {
-                res.json(user);
-            }
-        })
-        .catch((err) => {
-            console.error(err);
-            res.status(500).send('Error: ' + err);
-        });
-    });
+    //     .then((user) => {
+    //         if(!user) {
+    //             return res.status(400).send('Error: No user was found');
+    //         } else {
+    //             res.json(user);
+    //         }
+    //     })
+    //     .catch((err) => {
+    //         console.error(err);
+    //         res.status(500).send('Error: ' + err);
+    //     });
+    // });
+            .then((updatedUser) => res.status(200).json(updatedUser))
+            .catch((error) => {
+                console.error(error);
+                res.status(500).send('Error: ' + error);
+            });
+        });  
 
 
     //DELETE requests
